@@ -1,5 +1,7 @@
 package kr.kh.tmp.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,7 @@ public class HomeController {
 	
 	@Autowired
 	private MemberService memberService;
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 		
@@ -28,7 +30,6 @@ public class HomeController {
 		model.addAttribute("id", id);
 		return "/member/signup";
 	}
-	
 	
 	@PostMapping("/signup")
 	public String signupPost(Model model, MemberVO member) {
@@ -47,17 +48,28 @@ public class HomeController {
 		model.addAttribute("id", id);
 		return "/member/login";
 	}
-	
 	@PostMapping("/login")
 	public String loginPost(Model model, MemberVO member) {
-		MemberVO user =  memberService.login(member);
+		MemberVO user = memberService.login(member); 
 		if(user != null) {
 			model.addAttribute("url", "/");
 			model.addAttribute("msg", "로그인에 성공했습니다.");
+			model.addAttribute("user", user);
 		}else {
 			model.addAttribute("url", "/login?id=" + member.getMe_id());
 			model.addAttribute("msg", "로그인에 실패했습니다.");
 		}
 		return "message";
 	}
+	
+	@GetMapping("/logout")
+	public String logout(Model model, HttpSession session) {
+		
+		session.removeAttribute("user");
+		
+		model.addAttribute("url", "/");
+		model.addAttribute("msg", "로그아웃 했습니다.");
+		return "message";
+	}
+	
 }

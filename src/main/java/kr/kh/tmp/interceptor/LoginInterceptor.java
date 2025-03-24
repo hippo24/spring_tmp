@@ -1,4 +1,5 @@
 package kr.kh.tmp.interceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +19,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		
 		//넘겨준 회원 정보를 가져옴
 		MemberVO user = (MemberVO)mv.getModel().get("user");
-		//회원 정보가 있으면 => 로그인에 성공 했으면
+		//회원 정보가 있으면 => 로그인에 성공했으면 
 		if(user != null) {
 			//세션에 회원 정보를 추가
 			request.getSession().setAttribute("user", user);
@@ -31,7 +32,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			Object handler)
 			throws Exception {
 			
-			//구현
 			return true;
 	}
 }
