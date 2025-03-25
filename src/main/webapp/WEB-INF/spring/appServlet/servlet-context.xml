@@ -11,13 +11,13 @@
 
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
 	<context:component-scan base-package="kr.kh.tmp.*" />
+	
 	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 	    <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
 	    <beans:property name="order" value="1" /><!-- 순서를 우선으로 지정 -->
@@ -33,9 +33,14 @@
 	
 	<!-- 인터셉터 등록 -->
 	<beans:bean id="loginInterceptor" class="kr.kh.tmp.interceptor.LoginInterceptor"/>
+	<beans:bean id="adminInterceptor" class="kr.kh.tmp.interceptor.AdminInterceptor"/>
 	
 	<!-- 인터셉터 맵핑 -->
 	<interceptors>
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
 		<interceptor>
 			<mapping path="/login"/>
 			<beans:ref bean="loginInterceptor"/>
