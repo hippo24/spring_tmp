@@ -61,7 +61,7 @@
 	</div>
 	<script type="text/javascript">
 		var cri = {
-			page : 1,
+			page : 3,
 			po_num : ${post.po_num}
 		}
 		$(document).on("submit", ".comment-insert-form", function(e){
@@ -69,6 +69,7 @@
 			var content = $(this).find("[name=content]").val();
 
 			//댓글 내용을 입력 안한 경우
+			
 			
 			$.ajax({
 				async : true,
@@ -89,17 +90,18 @@
 			});
 		})
 	</script>
+	
 	<script type="text/javascript">
 		getCommentList(cri);
 		function getCommentList(cri) {
 			$.ajax({
 				async : true,
-				url : '<c:url value="/comment/list"/>'
-				type : 'post',
-				data : JSON.stringify(cri),
+				url : '<c:url value="/comment/list"/>', 
+				type : 'post', 
+				data : JSON.stringify(cri), 
 				contentType : "application/json; charset=utf-8",
-				success : function (data) {
-					console.log(data)					
+				success : function (data){
+					console.log(data)
 				}
 			});
 		}

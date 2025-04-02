@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.kh.tmp.model.vo.CommentVO;
 import kr.kh.tmp.model.vo.MemberVO;
+import kr.kh.tmp.pagination.CommentCriteria;
 import kr.kh.tmp.service.CommentService;
 
 @Controller
@@ -28,8 +29,8 @@ public class CommentController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/insert")
-	public String list(@RequestBody Criteria cri) {
+	@PostMapping("/list")
+	public String list(@RequestBody CommentCriteria cri) {
 		System.out.println(cri);
 		return "";
 	}
