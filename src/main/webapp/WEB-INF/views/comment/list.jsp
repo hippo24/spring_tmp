@@ -12,12 +12,19 @@
 	<c:if test="${list.size() != 0 }">
 		<div class="comment-list">
 			<c:forEach items="${list}" var="co">
-				<div class="comment-writer">${co.co_me_id }</div>
-				<div class="comment-content">${co.co_content }</div>
-				<div>
-					<button class="btn btn-outline-success">답글</button>
-					<button class="btn btn-outline-warning">수정</button>
-					<button class="btn btn-outline-danger">삭제</button>
+				<div class="comment-item <c:if test="${co.co_num ne co.co_ori_num }">pl-5</c:if>">
+					<c:if test="${co.co_del eq 'N' }">
+						<div class="comment-writer">${co.co_me_id }</div>
+						<div class="comment-content">${co.co_content }</div>
+						<div>
+							<button class="btn btn-outline-success btn-reply" data-num="${co.co_num}">답글</button>
+							<button class="btn btn-outline-warning">수정</button>
+							<button class="btn btn-outline-danger btn-delete" data-num="${co.co_num}">삭제</button>
+						</div>
+					</c:if>
+					<c:if test="${co.co_del ne 'N' }">
+						<div>작성자에 의해 삭제된 댓글입니다.</div>
+					</c:if>
 				</div>
 			</c:forEach>
 		</div>
@@ -55,6 +62,39 @@
 			cri.page = $(this).data("page");
 			getCommentList(cri);
 		});
+		$(".btn-reply").click(function(e){
+			//답글입력창이 여러개 생기는걸 방지
+			if($(this).parent().next().length != 0){
+				return;
+			}
+			let num = $(this).data("num");
+			let str = `
+				<form class="comment-insert-form" data-num="\${num}">
+					<textarea name="content"></textarea>
+					<button type="submit">답글 등록</button>
+				</form>
+			`;
+			$(this).parent().after(str);
+		});
+		$(".btn-delete").click(function(e){
+			let num = $(this).data("num");
+			$.ajax({
+				async : true,
+				url : '<c:url value="/comment/delete"/>', 
+				type : 'post', 
+				data : {
+					co_num : num
+				}, 
+				success : function (data){
+					if(data){
+						alert("댓글 삭제 성공!");
+						getCommentList(cri);
+					}else{
+						alert("이미 삭제된 댓글이거나 없는 댓글!");
+					}
+				}
+			});
+		})
 	</script>
 </body>
 </html>
