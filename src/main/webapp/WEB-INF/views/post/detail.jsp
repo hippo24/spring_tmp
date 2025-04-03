@@ -45,9 +45,9 @@
 		<div class="comment-wrap">
 		
 		</div>
-		<form class="comment-insert-form">
-			<textarea name="content"></textarea>
-			<button type="submit">댓글 등록</button>
+		<form class="comment-insert-form input-group">
+			<textarea name="content" class="form-control"></textarea>
+			<button type="submit" class="btn btn-outline-success">댓글 등록</button>
 		</form>
 	</div>
 	<div class="mb-3 d-flex justify-content-between">
@@ -66,6 +66,14 @@
 		}
 		$(document).on("submit", ".comment-insert-form", function(e){
 			e.preventDefault();
+			
+			if('${user.me_id}' == ''){
+				if(confirm("로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하겠습니까?")){
+					location.href = "<c:url value="/login"/>";
+				}
+				return;
+			}
+			
 			var $content = $(this).find("[name=content]");
 			var content = $content.val();
 			var ori_num = $(this).data("num");
@@ -141,7 +149,12 @@
 				}), 
 				contentType : "application/json; charset=utf-8",
 				success : function (data){
-					console.log(data);
+					if(data){
+						alert('댓글 수정!');
+						getCommentList(cri);
+					}else{
+						alert('댓글 수정 실패!');
+					}
 				}
 			});
 		})
