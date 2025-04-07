@@ -134,7 +134,7 @@ public class PostController {
 	public int like(Model model, @RequestBody LikeVO like, HttpSession session) {
 		System.out.println(like);
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		System.out.println(user);
+		
 		return 0;
 	}
 }
